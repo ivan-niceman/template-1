@@ -1,0 +1,54 @@
+---
+
+---
+
+<section class="cruises" id="cruises">
+  <div class="container">
+    <h2 class="title">Найди свой круиз!</h2>
+    <div class="cruises__widget">
+      <div id="ces"></div>
+      <script is:inline>
+        cesSettings = {
+          email: 'client@example.ru',
+          currencies: ['EUR', 'RUB'],
+        };
+      </script>
+      <script is:inline src="https://widget.gocruise.ru/js/app.js"></script>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cruises {
+    margin-top: 100px;
+    padding: 50px 0;
+    background: -o-linear-gradient(300.26deg, rgb(41, 182, 246) 6.09%, rgb(138, 0, 229) 80.257%);
+    background: linear-gradient(149.74deg, rgb(41, 182, 246) 6.09%, rgb(138, 0, 229) 80.257%);
+  }
+
+  @media (max-width: 768px) {
+    .cruises {
+      margin-top: 50px;
+    }
+  }
+
+  .cruises .container {
+    padding: 0;
+  }
+
+  .cruises .title {
+    color: #ffffff;
+    padding: 0;
+    text-align: center;
+  }
+
+  .cruises__widget {
+    margin-top: 50px;
+  }
+
+  @media (max-width: 450px) {
+    .cruises__widget {
+      margin: 50px 0 0;
+    }
+  }
+</style>

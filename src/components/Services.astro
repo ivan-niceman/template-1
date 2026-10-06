@@ -1,0 +1,107 @@
+---
+import { Image } from "astro:assets";
+import service1 from "../assets/images/services/services-1.jpeg";
+import service2 from "../assets/images/services/services-2.jpeg";
+import service3 from "../assets/images/services/services-3.jpeg";
+import service4 from "../assets/images/services/services-4.jpeg";
+import service5 from "../assets/images/services/services-5.jpeg";
+import service6 from "../assets/images/services/services-6.jpeg";
+
+const services = [
+  {
+    title: "Туры",
+    img: service1,
+    alt: "Пляжные и экскурсионные туры по всему миру",
+  },
+  {
+    title: "Авиабилеты",
+    img: service2,
+    alt: "Бронирование авиабилетов по выгодным тарифам",
+  },
+  {
+    title: "Ж/д билеты",
+    img: service3,
+    alt: "Ж/д билеты по России и зарубежным направлениям",
+  },
+  {
+    title: "Отели",
+    img: service4,
+    alt: "Бронирование отелей, вилл и апартаментов",
+  },
+  {
+    title: "Страховки",
+    img: service5,
+    alt: "Медицинское туристическое страхование",
+  },
+  {
+    title: "Визы",
+    img: service6,
+    alt: "Оформление виз и подготовка документов",
+  },
+];
+---
+
+<section class="services" id="services">
+  <div class="container">
+    <h2 class="title">Мы делаем это профессионально:</h2>
+
+    <ul class="cards__list">
+      {services.map((item) => (
+        <li class="cards__item">
+          <Image
+            src={item.img}
+            alt={item.alt}
+            class="cards__img"
+            width={210}
+            height={200}
+            loading="lazy"
+            quality={85}
+            format="webp"
+          />
+          <p class="cards__description">{item.title}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .services {
+    margin-top: 30px;
+  }
+
+  .cards__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 210px));
+    justify-content: center;
+    gap: 25px;
+    margin-top: 50px;
+  }
+
+  .cards__item {
+    transition: box-shadow var(--transition-speed);
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .cards__item:hover {
+    box-shadow: var(--shadow-card);
+  }
+
+  .cards__img {
+    display: block;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .cards__description {
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    margin: 15px 0;
+    color: #000;
+  }
+</style>

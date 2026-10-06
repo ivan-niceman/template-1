@@ -1,0 +1,83 @@
+---
+const advantages = [
+  "С нами спокойно и надежно!",
+  "Мы не бросим тебя после вылета",
+  "Мы не накручиваем цены",
+  "Мы хорошо знаем, куда тебя отправляем",
+  "Работаем официально по договору",
+  "Можешь купить тур, не выходя из дома!",
+];
+---
+
+<section class="about container" id="about">
+  <h2 class="title">Мы лучше всех, потому что:</h2>
+
+  <ol class="about__list">
+    {advantages.map((item) => (
+      <li>
+        <p>{item}</p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .about {
+    margin-top: 40px;
+  }
+
+  .about__list {
+    margin: 50px 0 0;
+    padding: 0;
+    counter-reset: item;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+  }
+
+  @media (max-width: 1000px) {
+    .about__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .about__list {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  }
+
+  .about__list li {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    font-size: 18px;
+    font-weight: 500;
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .about__list li::before {
+    content: counter(item) "";
+    counter-increment: item;
+    color: rgba(139, 128, 195, 0.4);
+    font-size: 140px;
+    font-weight: 900;
+    width: 80px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .about__list li::before {
+      font-size: 110px;
+      width: 65px;
+    }
+  }
+
+  .about__list li p {
+    transform: translateX(-25px);
+    line-height: 1.35;
+  }
+</style>

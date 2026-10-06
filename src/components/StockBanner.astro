@@ -1,0 +1,119 @@
+---
+import { Image } from "astro:assets";
+import womanImg from "../assets/images/woman.jpeg";
+---
+
+<section class="find-tours container" id="stock">
+  <div class="find-tours__block">
+    <div>
+      <h2 class="find-tours__title">Ищешь туры по акции?</h2>
+      <h2 class="find-tours__title">Тогда тебе сюда!</h2>
+      <p class="find-tours__text">
+        Хочешь узнать, на какие направления прямо сейчас действуют скидки до
+        40%? Оставь заявку и получи персональную подборку!
+      </p>
+      <button type="button" class="find-tours-btn feedback-btn">
+        Хочу!
+      </button>
+    </div>
+
+    <Image
+      src={womanImg}
+      alt="Счастливая туристка на фоне океана"
+      class="find-tours__img"
+      width={260}
+      height={260}
+      loading="lazy"
+      quality={85}
+      format="webp"
+    />
+  </div>
+</section>
+
+<style>
+  .find-tours {
+    margin-top: 100px;
+    max-width: 840px;
+  }
+
+  @media (max-width: 768px) {
+    .find-tours {
+      margin-top: 60px;
+    }
+  }
+
+  .find-tours__block {
+    padding: 30px 30px 30px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    background: #ffffff;
+  }
+
+  @media (max-width: 600px) {
+    .find-tours {
+      margin-top: 50px;
+      text-align: center;
+    }
+    .find-tours__block {
+      flex-direction: column;
+      padding: 30px 20px;
+    }
+  }
+
+  .find-tours__title {
+    color: #000;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .find-tours__title:first-of-type {
+    color: var(--color-btn-hover);
+  }
+
+  .find-tours__text {
+    margin-top: 20px;
+    color: #000;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .find-tours-btn {
+    margin-top: 40px;
+    max-width: 180px;
+    width: 100%;
+  }
+
+  @media (max-width: 600px) {
+    .find-tours__title {
+      font-size: 24px;
+    }
+    .find-tours__text {
+      font-size: 16px;
+    }
+    .find-tours-btn {
+      margin-top: 25px;
+    }
+  }
+
+  .find-tours__img {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 600px) {
+    .find-tours__img {
+      width: 200px;
+      height: 200px;
+      margin-top: 10px;
+    }
+  }
+</style>

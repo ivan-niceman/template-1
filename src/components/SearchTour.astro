@@ -1,0 +1,57 @@
+---
+import { Image } from "astro:assets";
+import widgetImg from "../assets/images/widget.jpeg";
+---
+
+<section class="search-tour container" id="search-tour">
+  <div class="widget">
+    <Image
+      src={widgetImg}
+      alt="Поиск туров онлайн"
+      class="widget__image"
+      loading="eager"
+      quality={90}
+      format="webp"
+    />
+  </div>
+</section>
+
+<style>
+  .search-tour {
+    margin-top: 40px;
+  }
+
+  .widget {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 964px;
+  }
+
+  .widget__image {
+    width: 100%;
+    max-width: 964px;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+  }
+
+  @media (max-width: 1024px) {
+    .widget {
+      max-width: 100%;
+      margin-top: 30px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .widget {
+      margin-top: 25px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .widget {
+      margin-top: 20px;
+    }
+  }
+</style>

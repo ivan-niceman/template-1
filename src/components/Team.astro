@@ -1,0 +1,130 @@
+---
+import { Image } from "astro:assets";
+import team1 from "../assets/images/team/team-1.jpeg";
+import team2 from "../assets/images/team/team-2.jpeg";
+import team3 from "../assets/images/team/team-3.jpeg";
+import team4 from "../assets/images/team/team-4.jpeg";
+
+const teamMembers = [
+  {
+    name: "Лидия Абрамова",
+    role: "Генеральный директор",
+    img: team1,
+    bio: "Влюблена в мир и путешествия. Расскажет о любых нюансах",
+  },
+  {
+    name: "Лидия Абрамова",
+    role: "Генеральный директор",
+    img: team2,
+    bio: "Влюблена в мир и путешествия. Расскажет о любых нюансах",
+  },
+  {
+    name: "Лидия Абрамова",
+    role: "Генеральный директор",
+    img: team3,
+    bio: "Влюблена в мир и путешествия. Расскажет о любых нюансах",
+  },
+  {
+    name: "Лидия Абрамова",
+    role: "Генеральный директор",
+    img: team4,
+    bio: "Влюблена в мир и путешествия. Расскажет о любых нюансах",
+  },
+];
+---
+
+<section class="team container" aria-label="Наша команда экспертов">
+  <h2 class="title" style="padding-top: 0; margin-bottom: 30px;">
+    Наша команда
+  </h2>
+
+  <ul class="team__list">
+    {teamMembers.map((member) => (
+      <li class="team__item">
+        <Image
+          src={member.img}
+          alt={`${member.name} — ${member.role}`}
+          class="team__photo"
+          width={240}
+          height={290}
+          loading="lazy"
+          quality={85}
+          format="webp"
+        />
+        <h3 class="team__name">{member.name}</h3>
+        <p class="team__role">{member.role}</p>
+        <p class="team__info">{member.bio}</p>
+        <button type="button" class="team__link feedback-btn">
+          Связаться
+        </button>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .team {
+    margin-top: 100px;
+  }
+
+  @media (max-width: 768px) {
+    .team {
+      margin-top: 60px;
+    }
+  }
+
+  .team__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+    justify-items: center;
+  }
+
+  .team__item {
+    max-width: 240px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .team__photo {
+    width: 100%;
+    height: 290px;
+    margin-bottom: 15px;
+    border-radius: 120px 120px 0 0;
+    object-fit: cover;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .team__name {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .team__role {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-btn);
+    text-transform: capitalize;
+    margin-top: 2px;
+  }
+
+  .team__info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    flex-grow: 1;
+  }
+
+  .team__link {
+    margin-top: 20px;
+    font-size: 16px;
+    padding: 12px 24px;
+    width: 100%;
+  }
+</style>

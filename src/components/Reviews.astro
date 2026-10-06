@@ -1,0 +1,475 @@
+---
+import { getImage } from "astro:assets";
+import feedbackBg from "../assets/images/feedback-bg.jpeg";
+
+const optimizedBg = await getImage({
+  src: feedbackBg,
+  format: "webp",
+  quality: 85,
+});
+
+const originalReviews = [
+  {
+    name: "Сергей",
+    date: "27 октября",
+    rating: "★★★★★",
+    text: "Летали в Турцию от Натальи, подобрала классный отель, поймали хорошую цену за счет покупки заранее по акции. Отель 5* в Кемере, Barut, питание шикарное, пляж с прозрачной водой, в конце октября было еще тепло!",
+  },
+  {
+    name: "Ольга",
+    date: "15 августа",
+    rating: "★★★★★",
+    text: "С детства мечтала о незабываемом свадебном путешествии! Обратилась в данную фирму по совету друзей, было решено лететь на Мальдивы. Посоветовали отличный отель 4*, роскошный риф с рыбками, вкуснейшая кухня и всё включено!",
+  },
+  {
+    name: "Евгения",
+    date: "20 мая",
+    rating: "★★★★★",
+    text: "Отпуск дали внезапно, мне не хотелось сидеть дома, подумала вдруг есть горящие? Все-таки высокий сезон, сомневалась, но девочки подобрали мне классный тур в Бодрум! Я там и накупалась, и натанцевалась!",
+  },
+  {
+    name: "Александра Д.",
+    date: "14 октября",
+    rating: "★★★★★",
+    text: "Уже третий год летаем в отпуск только через это агентство! Всегда помогут с регистрацией на рейс, подскажут экскурсии и оперативно решат любой вопрос даже ночью. Спасибо за прекрасный сервис!",
+  },
+];
+
+// Triplicate reviews to create an infinite circular buffer (clone sets before and after)
+const allReviews = [...originalReviews, ...originalReviews, ...originalReviews];
+---
+
+<section class="feedback" id="feedback">
+  <h2 class="title">Отзывы наших туристов</h2>
+
+  <div
+    class="feedback__slider"
+    style={`background-image: url(${optimizedBg.src});`}
+  >
+    <div class="container slider-container">
+      <!-- Desktop Prev Button -->
+      <button
+        type="button"
+        class="slider-btn slider-btn-prev slider-btn-desktop"
+        id="review-prev"
+        aria-label="Предыдущий отзыв"
+      ></button>
+
+      <!-- Viewport & Track for Infinite Slider -->
+      <div
+        class="slider-viewport"
+        id="review-viewport"
+        tabindex="0"
+        role="region"
+        aria-label="Карусель отзывов наших туристов"
+      >
+        <div class="slider-track" id="review-track">
+          {allReviews.map((item, index) => (
+            <div class="feedback__slide" data-index={index}>
+              <article class="feedback__card">
+                <div class="feedback__client">
+                  <p class="feedback__name">{item.name}</p>
+                  <time class="feedback__date">{item.date}</time>
+                </div>
+                <div class="feedback__rating" aria-label="Оценка 5 из 5">
+                  {item.rating}
+                </div>
+                <p class="feedback__description">{item.text}</p>
+              </article>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Desktop Next Button -->
+      <button
+        type="button"
+        class="slider-btn slider-btn-next slider-btn-desktop"
+        id="review-next"
+        aria-label="Следующий отзыв"
+      ></button>
+    </div>
+
+    <!-- Mobile Prev/Next Controls -->
+    <div class="slider-controls-mobile container">
+      <button
+        type="button"
+        class="slider-btn slider-btn-prev"
+        id="review-prev-m"
+        aria-label="Предыдущий отзыв"
+      ></button>
+      <button
+        type="button"
+        class="slider-btn slider-btn-next"
+        id="review-next-m"
+        aria-label="Следующий отзыв"
+      ></button>
+    </div>
+
+    <!-- Pagination Dots -->
+    <div class="slider-dots" id="review-dots" aria-label="Навигация по отзывам">
+      {originalReviews.map((_, i) => (
+        <button
+          type="button"
+          class={`slider-dot ${i === 0 ? "active" : ""}`}
+          data-dot-index={i}
+          aria-label={`Перейти к отзыву ${i + 1}`}
+        ></button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .feedback {
+    margin-top: 40px;
+  }
+
+  .feedback__slider {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: 40px;
+    padding: 60px 0;
+    position: relative;
+  }
+
+  .slider-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .slider-viewport {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+    padding: 15px 0 25px;
+    /* margin: -15px 0 -25px; */
+  }
+
+  .slider-viewport:active {
+    cursor: grabbing;
+  }
+
+  .slider-track {
+    display: flex;
+    gap: 30px;
+    will-change: transform;
+    padding: 10px 0 15px;
+  }
+
+  @media (max-width: 600px) {
+    .slider-track {
+      gap: 20px;
+    }
+  }
+
+  .feedback__slide {
+    flex: 0 0 calc((100% - 60px) / 3);
+    max-width: calc((100% - 60px) / 3);
+    width: calc((100% - 60px) / 3);
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 1024px) {
+    .feedback__slide {
+      flex: 0 0 calc((100% - 30px) / 2);
+      max-width: calc((100% - 30px) / 2);
+      width: calc((100% - 30px) / 2);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .feedback__slide {
+      flex: 0 0 100%;
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  .slider-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    padding: 0;
+  }
+
+  :global(.slider-dot.active) {
+    background: #ffffff;
+    transform: scale(1.3);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+  }
+
+  .feedback__card {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    background-color: #fff;
+    padding: 30px 24px;
+    height: 100%;
+    min-height: 250px;
+    box-sizing: border-box;
+    overflow: visible;
+  }
+
+  .feedback__client {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 12px;
+  }
+
+  .feedback__name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-text-main);
+  }
+
+  .feedback__date {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+
+  .feedback__rating {
+    color: #ffb800;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  .feedback__description {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-top: 16px;
+    color: #333333;
+    overflow: visible;
+    white-space: normal;
+  }
+
+  .slider-btn {
+    background: url(/images/arrow-slide.svg) center no-repeat;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    flex-shrink: 0;
+    z-index: 5;
+    transition:
+      transform var(--transition-speed),
+      background-color var(--transition-speed);
+  }
+
+  .slider-btn:hover {
+    background-color: #ffffff;
+    transform: scale(1.08);
+  }
+
+  .slider-btn-prev {
+    transform: rotate(180deg);
+    margin-right: 15px;
+  }
+
+  .slider-btn-prev:hover {
+    transform: rotate(180deg) scale(1.08);
+  }
+
+  .slider-btn-next {
+    margin-left: 15px;
+  }
+
+  @media (max-width: 768px) {
+    .slider-controls-mobile {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 20px;
+    }
+    .slider-btn-desktop {
+      display: none;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .slider-controls-mobile {
+      display: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const viewport = document.getElementById("review-viewport");
+    const track = document.getElementById("review-track");
+    const prevBtns = [
+      document.getElementById("review-prev"),
+      document.getElementById("review-prev-m"),
+    ];
+    const nextBtns = [
+      document.getElementById("review-next"),
+      document.getElementById("review-next-m"),
+    ];
+    const dotsContainer = document.getElementById("review-dots");
+    const dots = dotsContainer
+      ? Array.from(dotsContainer.querySelectorAll(".slider-dot"))
+      : [];
+
+    if (!track || !viewport) return;
+
+    const baseCount = 4;
+    // Start at middle set (index 4)
+    let currentIndex = 4;
+    let isTransitioning = false;
+
+    const getStepWidth = () => {
+      const firstSlide = track.querySelector(".feedback__slide");
+      if (!firstSlide) return 320;
+      const rect = firstSlide.getBoundingClientRect();
+      const style = window.getComputedStyle(track);
+      const gapVal = parseFloat(style.gap) || parseFloat(style.columnGap) || 30;
+      return rect.width + gapVal;
+    };
+
+    const updatePosition = () => {
+      const step = getStepWidth();
+      track.style.transform = `translateX(-${currentIndex * step}px)`;
+    };
+
+    const updateDots = () => {
+      const activeIdx = ((currentIndex % baseCount) + baseCount) % baseCount;
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle("active", idx === activeIdx);
+      });
+    };
+
+    const goTo = (nextIndex, immediate = false) => {
+      if (isTransitioning && !immediate) return;
+      if (!immediate) isTransitioning = true;
+
+      currentIndex = nextIndex;
+      track.style.transition = immediate
+        ? "none"
+        : "transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)";
+      updatePosition();
+      updateDots();
+    };
+
+    // Initialize track without animation immediately and on full page load
+    goTo(4, true);
+    window.addEventListener("load", () => goTo(currentIndex, true));
+
+    // Seamless infinite loop wrap-around on transition end
+    track.addEventListener("transitionend", () => {
+      isTransitioning = false;
+      if (currentIndex >= 8) {
+        currentIndex = currentIndex - 4;
+        track.style.transition = "none";
+        updatePosition();
+      } else if (currentIndex < 4) {
+        currentIndex = currentIndex + 4;
+        track.style.transition = "none";
+        updatePosition();
+      }
+    });
+
+    // Arrow buttons
+    prevBtns.forEach((btn) => {
+      btn?.addEventListener("click", () => {
+        goTo(currentIndex - 1);
+      });
+    });
+
+    nextBtns.forEach((btn) => {
+      btn?.addEventListener("click", () => {
+        goTo(currentIndex + 1);
+      });
+    });
+
+    // Dot navigation
+    dots.forEach((dot, i) => {
+      dot.addEventListener("click", () => {
+        const currentMod = ((currentIndex % baseCount) + baseCount) % baseCount;
+        let diff = i - currentMod;
+        if (diff > baseCount / 2) diff -= baseCount;
+        if (diff < -baseCount / 2) diff += baseCount;
+        goTo(currentIndex + diff);
+      });
+    });
+
+    // Touch & swipe handling
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isSwiping = false;
+
+    viewport.addEventListener(
+      "touchstart",
+      (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isSwiping = true;
+      },
+      { passive: true },
+    );
+
+    viewport.addEventListener(
+      "touchend",
+      (e) => {
+        if (!isSwiping) return;
+        isSwiping = false;
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+          if (deltaX < 0) {
+            goTo(currentIndex + 1);
+          } else {
+            goTo(currentIndex - 1);
+          }
+        }
+      },
+      { passive: true },
+    );
+
+    // Keyboard navigation
+    viewport.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") {
+        goTo(currentIndex - 1);
+      } else if (e.key === "ArrowRight") {
+        goTo(currentIndex + 1);
+      }
+    });
+
+    // Resize recalculation
+    let resizeTimeout;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        track.style.transition = "none";
+        updatePosition();
+      }, 50);
+    });
+  });
+</script>

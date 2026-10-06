@@ -1,0 +1,209 @@
+---
+// ContactModal.astro - Lead generation feedback popup form
+---
+
+<div
+  class="popup__form-content"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+>
+  <div class="popup__form-block">
+    <button type="button" class="close-popup" aria-label="Закрыть окно">
+      <span></span>
+      <span></span>
+    </button>
+
+    <h2 class="popup__form-title form-title" id="modal-title">
+      Мы с радостью свяжемся с Вами
+    </h2>
+
+    <form method="POST" class="form popup__form" action="/api/contact">
+      <input
+        type="text"
+        name="name"
+        placeholder="Ваше имя"
+        required
+        autocomplete="name"
+      />
+      <input
+        type="tel"
+        name="tel"
+        placeholder="Телефон *"
+        required
+        autocomplete="tel"
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Электронная почта *"
+        required
+        autocomplete="email"
+      />
+      <textarea
+        name="message"
+        class="popup__send-text"
+        placeholder="Удобный способ связи или пожелания по туру"
+        required
+      ></textarea>
+
+      <div class="popup-send-form-block send-form-block">
+        <button type="submit" class="popup-form__btn feedback-btn">
+          Отправить
+        </button>
+        <p class="popup-form__paragraph">
+          Нажимая на кнопку, вы даете{" "}
+          <a href="/consent" class="privacy" target="_blank" rel="noopener">
+            согласие
+          </a>
+          , что ознакомлены с {}
+          <a href="/privacy" class="privacy" target="_blank" rel="noopener">
+            политикой конфиденциальности
+          </a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .popup__form-content {
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+    transition:
+      opacity var(--transition-speed) ease,
+      visibility var(--transition-speed) ease;
+    backdrop-filter: blur(4px);
+    padding: 15px;
+  }
+
+  :global(.popup__form-content.popup__form_active) {
+    opacity: 1;
+    visibility: visible;
+    cursor: pointer;
+  }
+
+  .popup__form-block {
+    position: relative;
+    max-width: 600px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: var(--radius-md);
+    padding: 60px 40px 40px;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: scale(0.95);
+    transition: transform var(--transition-speed) ease;
+    cursor: auto;
+  }
+
+  :global(.popup__form-content.popup__form_active) .popup__form-block {
+    transform: scale(1);
+  }
+
+  @media (max-width: 500px) {
+    .popup__form-block {
+      padding: 45px 20px 30px;
+    }
+  }
+
+  .close-popup {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .close-popup > span {
+    position: absolute;
+    background: var(--color-btn-hover);
+    height: 2px;
+    width: 24px;
+    border-radius: 1px;
+  }
+
+  .close-popup > span:first-of-type {
+    transform: rotate(45deg);
+  }
+
+  .close-popup > span:last-of-type {
+    transform: rotate(-45deg);
+  }
+
+  .form-title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+    max-width: 360px;
+    margin-inline: auto;
+    color: var(--color-text-main);
+  }
+
+  .popup__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 30px;
+    gap: 15px;
+  }
+
+  .popup__form input,
+  .popup__form textarea {
+    border: none;
+    border-bottom: 2px solid var(--color-btn);
+    padding: 10px 4px;
+    outline: none;
+    width: 100%;
+    font-family: inherit;
+    font-size: 16px;
+    background: transparent;
+    transition: border-color var(--transition-speed);
+  }
+
+  .popup__form input:focus,
+  .popup__form textarea:focus {
+    border-bottom-color: var(--color-btn-hover);
+  }
+
+  .popup__form textarea {
+    resize: vertical;
+    min-height: 70px;
+  }
+
+  .popup-send-form-block {
+    margin-top: 20px;
+  }
+
+  .popup-form__btn {
+    max-width: 240px;
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .popup-form__paragraph {
+    font-size: 13px;
+    margin: 20px auto 0;
+    max-width: 360px;
+    color: #666666;
+    line-height: 1.4;
+  }
+
+  .popup-form__paragraph .privacy {
+    color: #333333;
+    text-decoration: underline;
+  }
+</style>

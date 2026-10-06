@@ -1,0 +1,268 @@
+---
+import { Image } from "astro:assets";
+import logoSvg from "../assets/images/logo.svg";
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__info">
+      <div class="footer__contacts">
+        <a href="/" class="logo" aria-label="На главную">
+          <Image
+            src={logoSvg}
+            alt="Логотип туристического агентства"
+            class="logo__img"
+            width={70}
+            height={70}
+            loading="eager"
+          />
+          <p class="logo-description">Ваш логотип</p>
+        </a>
+
+        <a class="phone" href="tel:+74957773341">
+          +7 495 777 33 41
+        </a>
+      </div>
+
+      <nav class="footer__nav" aria-label="Навигация в футере">
+        <ul>
+          <li>
+            <a href="#search-tour" class="nav__link navigation">
+              Поиск тура
+            </a>
+          </li>
+          <li>
+            <a href="#stock" class="nav__link navigation">
+              Акции
+            </a>
+          </li>
+          <li>
+            <a href="#cruises" class="nav__link navigation">
+              Круизы
+            </a>
+          </li>
+          <li>
+            <a href="#services" class="nav__link navigation">
+              Услуги
+            </a>
+          </li>
+          <li>
+            <a href="#about" class="nav__link navigation">
+              О нас
+            </a>
+          </li>
+          <li>
+            <a href="#feedback" class="nav__link navigation">
+              Отзывы
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="footer__address">
+        <button type="button" class="footer__feedback-btn feedback-btn">
+          Хочу отдохнуть!
+        </button>
+        <div>
+          <p>Режим работы: пн-пт с 9:00 до 19:00</p>
+          <p>Адрес: г. Москва, ул. Ленина 19, офис 301</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer__privacy">
+      <a href="/privacy" target="_blank" rel="noopener">
+        Положение об обработке персональных данных
+      </a>
+      <br />
+      <a href="/consent" target="_blank" rel="noreferrer">
+        Согласие на обработку персональных данных
+      </a>
+      <br />
+      <button
+        type="button"
+        class="footer__cookie-btn"
+        data-open-cookie-settings
+      >
+        Настройки cookie
+      </button>
+      <br />
+      Информация на сайте не является публичной офертой (ст. 437 ГК РФ) и носит
+      исключительно ознакомительный характер.
+      <br />
+      ИНН 4722222222222 | ОГРН 3777777777777
+    </p>
+
+    <a
+      class="nice-dev"
+      href="https://nice-dev.ru/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      © Nice Dev Web-Studio 2020 –{" "}
+      <span class="current-year">{currentYear}</span>
+    </a>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: 80px;
+    padding: 60px 0 20px;
+    background-color: var(--color-bg-footer);
+    color: #ffffff;
+  }
+
+  .footer :global(.logo-description) {
+    color: #fff;
+  }
+
+  .footer__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 50px;
+  }
+
+  @media (max-width: 768px) {
+    .footer__info {
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+  .footer :global(.phone) {
+    display: block;
+    margin-top: 25px;
+    color: #fff;
+  }
+
+  .footer__nav ul {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    gap: 25px 80px;
+  }
+
+  @media (max-width: 600px) {
+    .footer__nav ul {
+      grid-template-columns: 1fr;
+      gap: 15px;
+      text-align: center;
+    }
+  }
+
+  .footer__nav .nav__link {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    transition: color var(--transition-speed);
+  }
+
+  .footer__nav .nav__link:hover {
+    color: var(--color-btn-hover);
+  }
+
+  .footer__address {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 30px;
+  }
+
+  .footer__address p {
+    color: #fff;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .footer__address p:not(:last-of-type) {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 980px) {
+    .footer__address {
+      align-items: flex-start;
+    }
+    .footer__address p {
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 580px) {
+    .footer__address {
+      align-items: center;
+    }
+    .footer__address p {
+      text-align: center;
+    }
+  }
+
+  .footer__feedback-btn {
+    max-width: 210px;
+    width: 100%;
+  }
+
+  .footer__privacy {
+    margin-top: 50px;
+    padding-top: 25px;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: var(--font-secondary);
+    font-size: 13px;
+    max-width: 700px;
+    width: 100%;
+  }
+
+  .footer__privacy a {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--transition-speed);
+  }
+
+  .footer__privacy a:hover {
+    color: var(--color-btn-hover);
+  }
+
+  .footer__cookie-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 4px 0;
+    color: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--transition-speed);
+  }
+
+  .footer__cookie-btn:hover {
+    color: var(--color-btn-hover);
+  }
+
+  .nice-dev {
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    margin: 40px auto 0;
+    font-size: 13px;
+    color: #fff;
+    animation: colorTransform 5s infinite;
+  }
+
+  @keyframes colorTransform {
+    0%,
+    100% {
+      color: #ffffff;
+    }
+    50% {
+      color: #fbb42c;
+    }
+  }
+</style>

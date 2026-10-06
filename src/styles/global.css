@@ -1,0 +1,235 @@
+/* ==========================================================================
+   CSS Variables & Design Tokens
+   ========================================================================== */
+:root {
+  --color-btn: rgb(139, 128, 195);
+  --color-btn-hover: rgb(251, 94, 81);
+  --color-btn-active: rgb(138, 0, 229);
+  --color-text-main: #000000;
+  --color-text-muted: #555555;
+  --color-bg-page: #ffffff;
+  --color-bg-footer: #000000;
+  --font-main: "Inter", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-secondary: "Roboto", sans-serif;
+  --container-max-width: 1470px;
+  --container-padding: 30px;
+  --container-padding-mobile: 15px;
+  --transition-speed: 0.3s;
+  --radius-sm: 8px;
+  --radius-md: 20px;
+  --radius-lg: 30px;
+  --shadow-card: 0px 20px 20px 0px rgba(0, 0, 0, 0.1);
+  --shadow-nav: 10px 10px 15px 0px rgba(0, 0, 0, 0.1), 0px -4px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   CSS Reset & Base Styles
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-main);
+  color: var(--color-text-main);
+  background-color: var(--color-bg-page);
+  line-height: 1.4;
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+.body-hidden {
+  overflow: hidden;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+img,
+svg,
+picture {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ==========================================================================
+   Layout Containers & Common Utilities
+   ========================================================================== */
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main {
+  flex: 1 0 auto;
+}
+
+.container {
+  position: relative;
+  max-width: var(--container-max-width);
+  width: 100%;
+  margin-inline: auto;
+  padding: 0 var(--container-padding);
+}
+
+@media (max-width: 500px) {
+  .container {
+    padding: 0 var(--container-padding-mobile);
+  }
+}
+
+.title {
+  padding-top: 100px;
+  color: #000;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
+@media (max-width: 500px) {
+  .title {
+    padding-top: 50px;
+  }
+}
+
+/* ==========================================================================
+   Shared Repeating Classes (Deduplicated)
+   ========================================================================== */
+
+/* 1. Unified Primary Buttons */
+.btn-primary,
+.feedback-btn,
+.find-tours-btn,
+.popup-form__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background-color: var(--color-btn);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 15px 20px;
+  text-align: center;
+  transition: background-color var(--transition-speed), transform 0.15s ease, box-shadow var(--transition-speed);
+}
+
+.btn-primary:hover,
+.feedback-btn:hover,
+.find-tours-btn:hover,
+.popup-form__btn:hover {
+  background-color: var(--color-btn-hover);
+}
+
+.btn-primary:active,
+.feedback-btn:active,
+.find-tours-btn:active,
+.popup-form__btn:active {
+  background-color: var(--color-btn-active);
+  transform: scale(0.98);
+}
+
+/* 2. Shared Logo (Header & Footer) */
+.logo {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+}
+
+.logo__img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+
+.logo-description {
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* 3. Shared Phone Contact (Header & Footer) */
+.phone {
+  color: #000;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: color var(--transition-speed);
+}
+
+.phone:hover {
+  color: var(--color-btn-hover);
+}
+
+@media (max-width: 850px) {
+  .phone {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 700px) {
+  .phone {
+    text-align: center;
+    width: 100%;
+    order: 3;
+  }
+}
+
+/* 4. Shared Social Messengers (Header & Footer) */
+.social {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+}
+
+.social a {
+  width: 40px;
+  height: 40px;
+  display: block;
+  border-radius: 50%;
+  transition: transform var(--transition-speed), filter var(--transition-speed);
+}
+
+.social a:hover {
+  filter: brightness(1.1);
+}
+
+.social__max {
+  background: url(/images/icons/max.svg) center / cover no-repeat;
+}
+
+.social__telegram {
+  background: url(/images/icons/telegram.svg) center / cover no-repeat;
+}
+
+.social__vk {
+  background: url(/images/icons/vk.svg) center / cover no-repeat;
+}

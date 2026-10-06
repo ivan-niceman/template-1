@@ -1,0 +1,135 @@
+---
+import { Image } from "astro:assets";
+import anexTour from "../assets/images/partners/anex-tour.png";
+import intourist from "../assets/images/partners/Intourist.png";
+import coral from "../assets/images/partners/coral.png";
+import sunmar from "../assets/images/partners/Sunmar.png";
+import pegas from "../assets/images/partners/pegas.png";
+import alean from "../assets/images/partners/alean.png";
+import funsun from "../assets/images/partners/funsun.png";
+
+const partners = [
+  { name: "Анекс Тур", img: anexTour },
+  { name: "Интурист", img: intourist },
+  { name: "Корал Тревел", img: coral },
+  { name: "Санмар", img: sunmar },
+  { name: "Пегас Туристик", img: pegas },
+  { name: "Алеан", img: alean },
+  { name: "Фан Сан", img: funsun },
+];
+---
+
+<section class="partners container" aria-label="Партнеры и туроператоры">
+  <div class="marque" data-direction="left">
+    <div class="marque-track">
+      <!-- First set -->
+      <ul class="marque-list">
+        {partners.map((partner) => (
+          <li>
+            <Image
+              src={partner.img}
+              alt={partner.name}
+              width={135}
+              height={80}
+              loading="lazy"
+              quality={85}
+              format="webp"
+            />
+          </li>
+        ))}
+      </ul>
+      <!-- Duplicated set for seamless 100% pure CSS infinite loop -->
+      <ul class="marque-list" aria-hidden="true">
+        {partners.map((partner) => (
+          <li>
+            <Image
+              src={partner.img}
+              alt={partner.name}
+              width={135}
+              height={80}
+              loading="lazy"
+              quality={85}
+              format="webp"
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .partners {
+    margin-top: 80px;
+  }
+
+  @media (max-width: 768px) {
+    .partners {
+      margin-top: 50px;
+    }
+  }
+
+  .marque {
+    margin-top: 80px;
+    overflow: hidden;
+    position: relative;
+    mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    -webkit-mask: linear-gradient(
+      90deg,
+      transparent,
+      #000 5%,
+      #000 95%,
+      transparent
+    );
+  }
+
+  @media (max-width: 768px) {
+    .marque {
+      margin-top: 50px;
+    }
+  }
+
+  .marque-track {
+    display: flex;
+    width: max-content;
+    animation: marque 28s linear infinite;
+  }
+
+  .marque-list {
+    display: flex;
+    align-items: center;
+    column-gap: 70px;
+    padding-right: 70px;
+  }
+
+  .marque-list li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .marque-list img {
+    width: 135px;
+    height: 80px;
+    object-fit: contain;
+    filter: grayscale(20%);
+    transition:
+      filter var(--transition-speed),
+      transform var(--transition-speed);
+  }
+
+  .marque-list img:hover {
+    filter: grayscale(0%);
+    transform: scale(1.08);
+  }
+
+  @keyframes marque {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+</style>

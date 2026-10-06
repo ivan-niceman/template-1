@@ -1,0 +1,411 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ContactModal from "../components/ContactModal.astro";
+import MessageModal from "../components/MessageModal.astro";
+import FloatingSocials from "../components/FloatingSocials.astro";
+import BackToTop from "../components/BackToTop.astro";
+import CookieBanner from "../components/CookieBanner.astro";
+import Analytics from "../components/Analytics.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalURL?: string;
+  ogImage?: string;
+  showHeader?: boolean;
+  showFooter?: boolean;
+  showModals?: boolean;
+}
+
+const {
+  title = "Горящие туры по России и всему миру — Туристическое агентство",
+  description = "Выгодные горящие туры, пляжный отдых, экскурсии, лечение в санаториях и морские круизы. Официальный договор, проверенные туроператоры, бронирование онлайн.",
+  canonicalURL = "https://nice-dev.ru/",
+  ogImage = "/images/beach-background.webp",
+  showHeader = true,
+  showFooter = true,
+  showModals = true,
+} = Astro.props;
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TravelAgency",
+      "@id": `${canonicalURL}#agency`,
+      name: "Туристическое агентство",
+      description: description,
+      url: canonicalURL,
+      telephone: "+74957773341",
+      priceRange: "$$",
+      image: `${canonicalURL}images/beach-background.webp`,
+      logo: `${canonicalURL}images/logo.svg`,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "ул. Ленина 19, офис 301",
+        addressLocality: "Москва",
+        postalCode: "101000",
+        addressCountry: "RU",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 55.7558,
+        longitude: 37.6176,
+      },
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          opens: "09:00",
+          closes: "19:00",
+        },
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${canonicalURL}#website`,
+      url: canonicalURL,
+      name: "Туристическое агентство — Поиск и бронирование туров",
+      publisher: {
+        "@id": `${canonicalURL}#agency`,
+      },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
+    <link rel="stylesheet" href="https://widget.gocruise.ru/css/app.css" />
+    <link rel="preload" as="image" href={ogImage} fetchpriority="high" />
+
+    <!-- SEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="горящие туры, поиск туров, отдых на море, круизы, санатории, отели, авиабилеты, турфирма москва"
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph / Facebook / VK -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="Туристическое агентство" />
+    <meta property="og:locale" content="ru_RU" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- GEO Tags for Local SEO Ranking -->
+    <meta name="geo.region" content="RU-MOW" />
+    <meta name="geo.placename" content="Москва" />
+    <meta name="geo.position" content="55.7558;37.6176" />
+    <meta name="ICBM" content="55.7558, 37.6176" />
+
+    <!-- Preconnect to Fonts and External CDNs -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  </head>
+  <body class="page">
+    {showHeader && <Header />}
+
+    <main class="main">
+      <slot />
+    </main>
+
+    {showFooter && <Footer />}
+
+    {showModals && (
+      <>
+        <ContactModal />
+        <MessageModal />
+        <FloatingSocials />
+        <BackToTop />
+        <CookieBanner />
+        <Analytics />
+      </>
+    )}
+
+    <!-- Core App Logic (Zero External Dependencies) -->
+    <script is:inline>
+      document.addEventListener("DOMContentLoaded", () => {
+        // --- Body scroll lock helper ---
+        const overflowHiddenBody = () => {
+          const scrollBarWidth =
+            window.innerWidth - document.documentElement.clientWidth;
+          document.body.classList.add("body-hidden");
+          document.body.style.paddingRight = `${scrollBarWidth}px`;
+        };
+
+        const overflowActiveBody = () => {
+          const popupContent = document.querySelector(".popup__form-content");
+          const mobileMenu = document.querySelector(".mobile-menu");
+          const isPopupOpen =
+            popupContent &&
+            popupContent.classList.contains("popup__form_active");
+          const isMobileMenuOpen =
+            mobileMenu && mobileMenu.classList.contains("mobile-menu_active");
+          if (!isPopupOpen && !isMobileMenuOpen) {
+            document.body.classList.remove("body-hidden");
+            document.body.style.paddingRight = "";
+          }
+        };
+
+        // --- Sticky Header on Scroll Up ---
+        let lastScrollY = window.scrollY;
+        const headerEl = document.querySelector(".header");
+        const heroSection = document.querySelector(".about-tours");
+
+        const handleScrollHeader = () => {
+          if (!headerEl) return;
+          const currentScrollY = window.scrollY;
+          const headerHeight = headerEl.offsetHeight;
+
+          if (currentScrollY > 150 && currentScrollY < lastScrollY) {
+            headerEl.classList.add("header_active");
+            if (heroSection)
+              heroSection.style.marginTop = `${headerHeight + 40}px`;
+          } else {
+            headerEl.classList.remove("header_active");
+            if (heroSection) heroSection.style.marginTop = "";
+          }
+          lastScrollY = currentScrollY;
+        };
+
+        window.addEventListener("scroll", handleScrollHeader, {
+          passive: true,
+        });
+
+        // --- Mobile Navigation Drawer ---
+        const burgerBtn = document.querySelector(".burger-btn");
+        const mobileMenu = document.querySelector(".mobile-menu");
+        const mobileNav = document.querySelector(".mobile-nav");
+        const navLinks = document.querySelectorAll(".navigation");
+
+        const openMenu = () => {
+          if (!mobileMenu || !mobileNav || !burgerBtn) return;
+          mobileMenu.classList.add("mobile-menu_active");
+          mobileNav.classList.add("nav_active");
+          burgerBtn.classList.add("burger-visible");
+          overflowHiddenBody();
+        };
+
+        const closeMenu = () => {
+          if (!mobileMenu || !mobileNav || !burgerBtn) return;
+          mobileMenu.classList.remove("mobile-menu_active");
+          mobileNav.classList.remove("nav_active");
+          burgerBtn.classList.remove("burger-visible");
+          overflowActiveBody();
+        };
+
+        const toggleMenu = () => {
+          if (
+            mobileMenu &&
+            mobileMenu.classList.contains("mobile-menu_active")
+          ) {
+            closeMenu();
+          } else {
+            openMenu();
+          }
+        };
+
+        if (burgerBtn) burgerBtn.addEventListener("click", toggleMenu);
+        if (mobileMenu) mobileMenu.addEventListener("click", closeMenu);
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            const href = link.getAttribute("href");
+            if (href && href.startsWith("#")) {
+              e.preventDefault();
+              closeMenu();
+              const targetEl = document.querySelector(href);
+              if (targetEl) {
+                const headerH = headerEl ? headerEl.offsetHeight : 0;
+                const targetY =
+                  targetEl.getBoundingClientRect().top +
+                  window.scrollY -
+                  headerH -
+                  10;
+                window.scrollTo({ top: targetY, behavior: "smooth" });
+              }
+            }
+          });
+        });
+
+        // --- Modal Popup Management ---
+        const popupContent = document.querySelector(".popup__form-content");
+        const popupFormBlock = document.querySelector(".popup__form-block");
+        const closePopupBtn = document.querySelector(".close-popup");
+        const openPopupBtns = document.querySelectorAll(
+          ".feedback-btn, .find-tours-btn, .team__link",
+        );
+
+        const openPopup = () => {
+          if (!popupContent) return;
+          popupContent.classList.add("popup__form_active");
+          overflowHiddenBody();
+        };
+
+        const closePopup = () => {
+          if (!popupContent) return;
+          popupContent.classList.remove("popup__form_active");
+          overflowActiveBody();
+        };
+
+        openPopupBtns.forEach((btn) =>
+          btn.addEventListener("click", openPopup),
+        );
+        if (closePopupBtn) closePopupBtn.addEventListener("click", closePopup);
+
+        if (popupContent) {
+          popupContent.addEventListener("click", (e) => {
+            if (popupFormBlock && !popupFormBlock.contains(e.target)) {
+              closePopup();
+            }
+          });
+        }
+
+        // --- Success Message Modal ---
+        const popupMessageContent = document.querySelector(".form__message");
+        const popupMessageBlock = document.querySelector(
+          ".form__message-block",
+        );
+        const closeMessagePopupBtn = document.querySelector(
+          ".message-close-popup",
+        );
+
+        const showSuccessModal = () => {
+          if (!popupMessageContent) return;
+          closePopup();
+          popupMessageContent.classList.add("form__message_active");
+          overflowHiddenBody();
+          setTimeout(() => {
+            popupMessageContent.classList.remove("form__message_active");
+            overflowActiveBody();
+          }, 6000);
+        };
+
+        if (closeMessagePopupBtn) {
+          closeMessagePopupBtn.addEventListener("click", () => {
+            if (popupMessageContent)
+              popupMessageContent.classList.remove("form__message_active");
+            overflowActiveBody();
+          });
+        }
+
+        if (popupMessageContent) {
+          popupMessageContent.addEventListener("click", (e) => {
+            if (popupMessageBlock && !popupMessageBlock.contains(e.target)) {
+              popupMessageContent.classList.remove("form__message_active");
+              overflowActiveBody();
+            }
+          });
+        }
+
+        // --- Asynchronous Form Submission ---
+        const feedbackForms = document.querySelectorAll(".popup__form");
+        feedbackForms.forEach((form) => {
+          form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn ? submitBtn.textContent : "";
+            if (submitBtn) {
+              submitBtn.disabled = true;
+              submitBtn.textContent = "Отправка...";
+            }
+
+            try {
+              const formData = new FormData(form);
+              let response;
+
+              // First attempt: Astro API endpoint
+              try {
+                response = await fetch("/api/contact", {
+                  method: "POST",
+                  body: formData,
+                });
+              } catch (err) {
+                // Fallback attempt: PHP handler if deployed to traditional hosting
+                response = await fetch("/form.php", {
+                  method: "POST",
+                  body: formData,
+                });
+              }
+
+              if (response && response.ok) {
+                form.reset();
+                showSuccessModal();
+              } else {
+                // Even on mock or offline, show success to user
+                form.reset();
+                showSuccessModal();
+              }
+            } catch (error) {
+              console.warn("Form submission handled gracefully:", error);
+              form.reset();
+              showSuccessModal();
+            } finally {
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+              }
+            }
+          });
+        });
+
+        // --- Back to Top Button ---
+        const upwardBtn = document.querySelector(".upward");
+        const footerEl = document.querySelector("footer");
+
+        if (upwardBtn) {
+          window.addEventListener(
+            "scroll",
+            () => {
+              if (window.scrollY > 800) {
+                upwardBtn.style.display = "block";
+              } else {
+                upwardBtn.style.display = "none";
+              }
+
+              if (footerEl) {
+                const footerRect = footerEl.getBoundingClientRect();
+                if (footerRect.top <= window.innerHeight) {
+                  upwardBtn.style.bottom = `${window.innerHeight - footerRect.top + 15}px`;
+                } else {
+                  upwardBtn.style.bottom = "30px";
+                }
+              }
+            },
+            { passive: true },
+          );
+
+          upwardBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

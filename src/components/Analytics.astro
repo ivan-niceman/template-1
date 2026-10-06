@@ -1,0 +1,157 @@
+---
+interface Props {
+  yandexMetrikaId?: string;
+  googleAnalyticsId?: string;
+}
+
+const {
+  yandexMetrikaId = '',
+  googleAnalyticsId = '',
+} = Astro.props;
+---
+
+<script is:inline define:vars={{ yandexMetrikaId, googleAnalyticsId }}>
+  (() => {
+    'use strict';
+
+    // =========================================================================
+    // ШАБЛОН НАСТРОЙКИ СЧЕТЧИКОВ АНАЛИТИКИ
+    // Укажите идентификаторы счетчиков ниже (или передайте их через props компонента):
+    // =========================================================================
+    const YM_ID = yandexMetrikaId || ''; // Пример: '12345678'
+    const GA_ID = googleAnalyticsId || ''; // Пример: 'G-XXXXXXXXXX'
+
+    let isAnalyticsLoaded = false;
+
+    /**
+     * Dynamically injects official Yandex.Metrika counter
+     */
+    function loadYandexMetrika(counterId) {
+      if (!counterId) return;
+      if (window['ym_loaded_' + counterId]) return;
+
+      (function(m, e, t, r, i, k, a) {
+        m[i] = m[i] || function() {
+          (m[i].a = m[i].a || []).push(arguments);
+        };
+        m[i].l = 1 * new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) { return; }
+        }
+        k = e.createElement(t);
+        a = e.getElementsByTagName(t)[0];
+        k.async = 1;
+        k.src = r;
+        a.parentNode.insertBefore(k, a);
+      })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+
+      window.ym(counterId, 'init', {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true,
+      });
+
+      window['ym_loaded_' + counterId] = true;
+      console.info(`[Analytics] Яндекс.Метрика (${counterId}) успешно активирована с согласия пользователя.`);
+    }
+
+    /**
+     * Dynamically injects official Google Analytics 4 (gtag.js)
+     */
+    function loadGoogleAnalytics(measurementId) {
+      if (!measurementId) return;
+      if (window['ga_loaded_' + measurementId]) return;
+
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+      document.head.appendChild(script);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      window.gtag = gtag;
+
+      gtag('js', new Date());
+      gtag('config', measurementId, {
+        anonymize_ip: true,
+        cookie_flags: 'SameSite=None;Secure',
+      });
+
+      window['ga_loaded_' + measurementId] = true;
+      console.info(`[Analytics] Google Analytics 4 (${measurementId}) успешно активирован с согласия пользователя.`);
+    }
+
+    /**
+     * Main conditional activator
+     */
+    function enableAnalytics() {
+      // 1. Strict Consent Check
+      if (typeof window.hasAnalyticsConsent !== 'function' || !window.hasAnalyticsConsent()) {
+        return;
+      }
+
+      if (isAnalyticsLoaded) return;
+      isAnalyticsLoaded = true;
+
+      // 2. Load configured counters
+      if (YM_ID) {
+        loadYandexMetrika(YM_ID);
+      }
+      if (GA_ID) {
+        loadGoogleAnalytics(GA_ID);
+      }
+
+      if (!YM_ID && !GA_ID) {
+        console.info('[Analytics] Аналитическое согласие получено. Укажите YM_ID или GA_ID в src/components/Analytics.astro для передачи данных.');
+      }
+    }
+
+    /**
+     * Helper to dispatch conversion goals safely
+     */
+    window.reachGoal = function(targetName, targetParams) {
+      if (!window.hasAnalyticsConsent()) {
+        console.debug(`[Analytics] Событие "${targetName}" пропущено: аналитические cookie отключены пользователем.`);
+        return;
+      }
+
+      if (YM_ID && typeof window.ym === 'function') {
+        window.ym(YM_ID, 'reachGoal', targetName, targetParams);
+      }
+      if (GA_ID && typeof window.gtag === 'function') {
+        window.gtag('event', targetName, targetParams);
+      }
+    };
+
+    // 3. React to user consent updates in real time
+    window.addEventListener('cookieConsentUpdated', (event) => {
+      const isAllowed = Boolean(event.detail && event.detail.analytics === true);
+      if (isAllowed) {
+        enableAnalytics();
+      } else {
+        isAnalyticsLoaded = false;
+        console.info('[Analytics] Аналитическое согласие отозвано пользователем. Сбор статистики приостановлен.');
+      }
+    });
+
+    // 4. Check consent on initial page load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', enableAnalytics);
+    } else {
+      enableAnalytics();
+    }
+
+    // 5. Automatic conversion goal tracking for lead forms
+    document.addEventListener('DOMContentLoaded', () => {
+      const contactForm = document.querySelector('.popup__form');
+      if (contactForm) {
+        contactForm.addEventListener('submit', () => {
+          window.reachGoal('submit_lead_form', { source: 'popup' });
+        });
+      }
+    });
+  })();
+</script>

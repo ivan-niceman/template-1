@@ -1,0 +1,105 @@
+---
+
+---
+
+<div class="form__message" role="status" aria-live="polite">
+  <div class="form__message-block">
+    <button type="button" class="message-close-popup" aria-label="Закрыть уведомление">
+      <span></span>
+      <span></span>
+    </button>
+    <h2 class="form__message-title">Спасибо!</h2>
+    <p class="form__message-text">
+      Спасибо, что оставили заявку! Наш эксперт свяжется с вами в течение 15 минут для уточнения всех деталей путешествия.
+    </p>
+  </div>
+</div>
+
+<style>
+  .form__message {
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+    transition: opacity var(--transition-speed) ease, visibility var(--transition-speed) ease;
+    backdrop-filter: blur(4px);
+    padding: 15px;
+  }
+
+  :global(.form__message.form__message_active) {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .form__message-block {
+    position: relative;
+    max-width: 600px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: var(--radius-md);
+    padding: 60px 40px 40px;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: scale(0.95);
+    transition: transform var(--transition-speed) ease;
+  }
+
+  :global(.form__message.form__message_active) .form__message-block {
+    transform: scale(1);
+  }
+
+  @media (max-width: 500px) {
+    .form__message-block {
+      padding: 45px 20px 30px;
+    }
+  }
+
+  .message-close-popup {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .message-close-popup > span {
+    position: absolute;
+    background: var(--color-btn-hover);
+    height: 2px;
+    width: 24px;
+    border-radius: 1px;
+  }
+
+  .message-close-popup > span:first-of-type {
+    transform: rotate(45deg);
+  }
+
+  .message-close-popup > span:last-of-type {
+    transform: rotate(-45deg);
+  }
+
+  .form__message-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-btn-active);
+    text-transform: uppercase;
+  }
+
+  .form__message-text {
+    margin-top: 20px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--color-text-main);
+  }
+</style>

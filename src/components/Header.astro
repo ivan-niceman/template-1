@@ -1,0 +1,370 @@
+---
+import { Image } from "astro:assets";
+import logoSvg from "../assets/images/logo.svg";
+---
+
+<header class="header">
+  <div class="header__menu">
+    <div class="container">
+      <a href="/" class="logo" aria-label="На главную">
+        <Image
+          src={logoSvg}
+          alt="Логотип туристического агентства"
+          class="logo__img"
+          width={70}
+          height={70}
+          loading="eager"
+        />
+        <p class="logo-description">Ваш логотип</p>
+      </a>
+
+      <a class="phone" href="tel:+74957773341">
+        +7 495 777 33 41
+      </a>
+
+      <div class="social">
+        <a
+          href="https://max.ru/u/f9LHodD0cOKVE5qofs_rxTYqArSbNOWAMh5acGm-JdIQJTRyQVCBrugo8Zk"
+          class="social__max"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Написать в max"
+        ></a>
+        <a
+          href="https://t.me/"
+          class="social__telegram"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Написать в Telegram"
+        ></a>
+        <a
+          href="https://vk.com/"
+          class="social__vk"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Мы ВКонтакте"
+        ></a>
+      </div>
+
+      <button type="button" class="header__feedback-btn feedback-btn">
+        Хочу отдохнуть!
+      </button>
+
+      <button
+        type="button"
+        class="burger-btn"
+        aria-label="Открыть мобильное меню"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Mobile drawer overlay & navigation -->
+      <div class="mobile-menu" aria-hidden="true"></div>
+      <nav class="mobile-nav" aria-label="Мобильная навигация">
+        <ul class="mobile-nav__list">
+          <li>
+            <a href="#search-tour" class="mobile-nav__link navigation">
+              Поиск тура
+            </a>
+          </li>
+          <li>
+            <a href="#cruises" class="mobile-nav__link navigation">
+              Круизы
+            </a>
+          </li>
+          <li>
+            <a href="#stock" class="mobile-nav__link navigation">
+              Акции
+            </a>
+          </li>
+          <li>
+            <a href="#services" class="mobile-nav__link navigation">
+              Услуги
+            </a>
+          </li>
+          <li>
+            <a href="#about" class="mobile-nav__link navigation">
+              О нас
+            </a>
+          </li>
+          <li>
+            <a href="#feedback" class="mobile-nav__link navigation">
+              Отзывы
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <nav class="header__nav container" aria-label="Главная навигация">
+    <ul class="header-nav__list">
+      <li>
+        <a href="#search-tour" class="header-nav__link navigation">
+          Поиск тура
+        </a>
+      </li>
+      <li>
+        <a href="#cruises" class="header-nav__link navigation">
+          Круизы
+        </a>
+      </li>
+      <li>
+        <a href="#stock" class="header-nav__link navigation">
+          Акции
+        </a>
+      </li>
+      <li>
+        <a href="#services" class="header-nav__link navigation">
+          Услуги
+        </a>
+      </li>
+      <li>
+        <a href="#about" class="header-nav__link navigation">
+          О нас
+        </a>
+      </li>
+      <li>
+        <a href="#feedback" class="header-nav__link navigation">
+          Отзывы
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .header {
+    left: 0;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+    transition:
+      transform var(--transition-speed) ease,
+      top var(--transition-speed) ease;
+  }
+
+  :global(.header.header_active) {
+    position: fixed;
+    top: 0;
+    z-index: 50;
+    animation: slideDown 0.3s ease forwards;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .header__menu {
+    background-color: #fff;
+    padding: 15px 0 35px;
+    box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    .header__menu {
+      padding: 15px 0;
+    }
+    .header :global(.social) {
+      display: none;
+    }
+  }
+
+  .header__menu .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media (max-width: 700px) {
+    .header__menu .container {
+      flex-wrap: wrap;
+      row-gap: 15px;
+    }
+  }
+
+  .header__feedback-btn {
+    max-width: 200px;
+    width: 100%;
+  }
+
+  @media (max-width: 700px) {
+    .header__feedback-btn {
+      margin-inline: auto;
+      order: 4;
+    }
+  }
+
+  /* Burger Button */
+  .burger-btn {
+    display: none;
+    position: relative;
+    width: 40px;
+    height: 22px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    z-index: 60;
+  }
+
+  @media (max-width: 768px) {
+    .burger-btn {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .burger-btn {
+      order: 2;
+    }
+  }
+
+  .burger-btn > span {
+    background-color: rgb(251, 94, 81);
+    height: 3px;
+    width: 100%;
+    transition:
+      transform var(--transition-speed),
+      opacity var(--transition-speed),
+      background-color var(--transition-speed);
+    border-radius: 2px;
+  }
+
+  :global(.burger-btn.burger-visible) {
+    justify-content: center;
+  }
+
+  :global(.burger-btn.burger-visible) > span {
+    position: absolute;
+    background-color: var(--color-btn);
+  }
+
+  :global(.burger-btn.burger-visible) > span:nth-child(1) {
+    transform: rotate(45deg);
+  }
+
+  :global(.burger-btn.burger-visible) > span:nth-child(2) {
+    opacity: 0;
+  }
+
+  :global(.burger-btn.burger-visible) > span:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+
+  /* Mobile Menu Drawer */
+  .mobile-menu {
+    opacity: 0;
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    inset: 0;
+    transition:
+      opacity var(--transition-speed),
+      visibility var(--transition-speed);
+    cursor: pointer;
+    z-index: 55;
+    backdrop-filter: blur(2px);
+  }
+
+  :global(.mobile-menu.mobile-menu_active) {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-nav {
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    top: -110%;
+    right: 0;
+    width: 100%;
+    max-width: 320px;
+    background-color: #000;
+    padding: 90px 40px 40px;
+    transition:
+      top var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1),
+      opacity var(--transition-speed),
+      visibility var(--transition-speed);
+    z-index: 58;
+    cursor: auto;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+  }
+
+  :global(.mobile-nav.nav_active) {
+    opacity: 1;
+    visibility: visible;
+    top: 0;
+  }
+
+  .mobile-nav__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 24px;
+  }
+
+  .mobile-nav__link {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition:
+      color var(--transition-speed),
+      border-color var(--transition-speed);
+    padding-bottom: 4px;
+  }
+
+  .mobile-nav__link:hover {
+    color: var(--color-btn);
+    border-bottom-color: var(--color-btn);
+  }
+
+  /* Desktop Header Nav */
+  .header__nav {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-nav);
+    transform: translateY(-50%);
+    margin-bottom: -28px;
+  }
+
+  @media (max-width: 768px) {
+    .header__nav {
+      display: none;
+    }
+  }
+
+  .header-nav__list {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .header-nav__link {
+    color: #000;
+    font-size: 18px;
+    font-weight: 500;
+    transition: color var(--transition-speed);
+    padding: 5px 10px;
+  }
+
+  .header-nav__link:hover {
+    color: var(--color-btn-hover);
+  }
+</style>

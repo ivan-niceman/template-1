@@ -1,0 +1,111 @@
+---
+// Hero.astro - Main hero section with background and tour search widget
+import { Image } from 'astro:assets';
+import beachBg from '../assets/images/beach-background.jpeg';
+import SearchTour from './SearchTour.astro';
+---
+
+<div class="hero-wrapper">
+  <Image
+    src={beachBg}
+    alt="Тропический пляж, море и пальмы"
+    class="background__img"
+    loading="eager"
+    fetchpriority="high"
+    quality={85}
+    format="webp"
+  />
+
+  <section class="about-tours container">
+    <h1 class="about-tours__title">
+      Горящие туры по России и всему земному шару!
+    </h1>
+    <p class="about-tours__description">
+      Лечение в санаториях, отдых на море, активные и экскурсионные поездки, круизы — все для вас!
+    </p>
+  </section>
+
+  <SearchTour />
+</div>
+
+<style>
+  .hero-wrapper {
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 60px;
+    margin-top: -28px;
+  }
+
+  .background__img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    min-width: 320px;
+    height: 100%;
+    min-height: 750px;
+    object-fit: cover;
+    z-index: -1;
+  }
+
+  .about-tours {
+    margin-top: 75px;
+    max-width: 900px;
+  }
+
+  .about-tours__title {
+    color: #ffffff;
+    font-size: 44px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+    max-width: 1050px;
+    line-height: 1.2;
+  }
+
+  .about-tours__description {
+    margin: 20px 0 0;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (max-width: 1024px) {
+    .about-tours__title {
+      font-size: 36px;
+    }
+    .about-tours__description {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-wrapper {
+      margin-top: 0;
+      padding-bottom: 40px;
+    }
+    .about-tours {
+      margin-top: 40px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .about-tours {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .about-tours__title {
+      font-size: 26px;
+      text-align: center;
+    }
+    .about-tours__description {
+      font-size: 15px;
+      text-align: center;
+      margin-top: 15px;
+    }
+  }
+</style>

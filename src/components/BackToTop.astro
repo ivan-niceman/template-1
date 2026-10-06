@@ -1,0 +1,29 @@
+---
+// BackToTop.astro - Smooth scroll-to-top button
+---
+
+<button type="button" class="upward" aria-label="Вернуться наверх страницы" title="Наверх"></button>
+
+<style>
+  .upward {
+    display: none;
+    position: fixed;
+    left: 25px;
+    bottom: 30px;
+    background: url(/images/arrow-slide.svg) center / 22px no-repeat;
+    background-color: var(--color-btn-hover);
+    transform: rotate(-90deg);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 40;
+    cursor: pointer;
+    transition: transform var(--transition-speed), background-color var(--transition-speed);
+  }
+
+  .upward:hover {
+    background-color: var(--color-btn-active);
+    transform: rotate(-90deg) scale(1.08);
+  }
+</style>
